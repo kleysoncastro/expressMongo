@@ -6,7 +6,8 @@ const requireDir = require('require-dir');
 const app = express();
 
 // conexao com DB
-mongoose.connect('mongodb://localhost:27017/apinode', {useUnifiedTopology: true, useNewUrlParser: true});
+mongoose.connect('mongodb://localhost:27017/apinode',
+     {useUnifiedTopology: true, useNewUrlParser: true});
 
 
 var db = mongoose.connection;
@@ -23,25 +24,9 @@ db.once('open', function(){
 
 requireDir('./src/models');
 
-// o parametro passsado nessa funcao deve ser o mesmo nome da implementacao em Product.js
-const Product = mongoose.model('Produto');// essa parametro produto é da classe Product
+// use() recebe todo tipo de requisicao
 
-// istancia
-var camisa = new Product({
-    title: 'Camisa Naruto',
-    description: "camisa g",
-    url: 'www.google.com/img'
-});
-camisa.save().then(() =>{
-console.log("Procuto salva");
-
-}).catch((erro)=>{
-    console.log('Erro ao salvar');
-});
-
-app.get('/', (req, res) => {
-   return res.send("pagina root testes");
-});
-
+// toda requisao que chegar em /api será redirecionada para ./src/routes.js
+app.use('/api', require('./src/routes'));
 
 app.listen(3001);
