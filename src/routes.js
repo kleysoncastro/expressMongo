@@ -1,9 +1,10 @@
 const express = require('express');
 const routes = express.Router();
 
-routes.get('/', (req, res)=> {
+// importacao do modudo criado em ProductController
+const produtoController = require('./controller/ProductController');
 
-   return res.send('nova rota');
-});
+routes.get('/', produtoController.index);
+
 
 module.exports = routes;
